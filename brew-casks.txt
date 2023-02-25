@@ -1,0 +1,13 @@
+iterm2
+alfred
+rectangle
+alt-tab
+firefox-developer-edition
+app-cleaner
+android-file-transfer
+android-platform-tools
+keepingyouwawake
+discord
+slack
+vlc
+keka
