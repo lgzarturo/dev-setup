@@ -6,14 +6,13 @@ brew install --cask \
     app-cleaner \
     caffeine \
     cheatsheet \
-    colloquy \
     discord \
     docker \
     doubletwist \
-    dropbox \
     google-chrome \
-    google-hangouts \
+    google-chat \
     iterm2 \
+    insomnia \
     keepingyouwawake \
     flux \
     rectangle \
@@ -24,6 +23,7 @@ brew install --cask \
     vlc \
     slack \
     keka \
+    kap \
     qlcolorcode \
     qlstephen \
     qlmarkdown \
@@ -32,4 +32,5 @@ brew install --cask \
     quicklook-csv \
     betterzip \
     webpquicklook \
-    suspicious-package
+    suspicious-package \
+    visual-studio-code

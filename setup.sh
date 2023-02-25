@@ -8,6 +8,11 @@ brew install zsh
 brew install tree
 brew install fzf
 brew install ack
+brew install ffmpeg
+brew install youtube-dl
+brew install imagemagick
+brew install bash
+brew install vcprompt
 brew install bash-completion
 echo "[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion" >> ~/.bash_profile
 source ~/.bash_profile
@@ -23,6 +28,9 @@ git config --global credential.helper osxkeychain
 brew install vim
 git clone https://github.com/amix/vimrc.git ~/.vim_runtime
 sh ~/.vim_runtime/install_awesome_vimrc.sh
+brew install neovim
+mkdir -p ~/.config/nvim
+ln -s (which nvim) /opt/homebrew/bin/nvim
 
 # install python
 brew install python
