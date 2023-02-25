@@ -1,13 +1,35 @@
-iterm2
-alfred
-rectangle
-alt-tab
-firefox-developer-edition
-app-cleaner
-android-file-transfer
-android-platform-tools
-keepingyouwawake
-discord
-slack
-vlc
-keka
+brew install --cask \
+    alfred \
+    alt-tab \
+    android-file-transfer \
+    android-platform-tools \
+    app-cleaner \
+    caffeine \
+    cheatsheet \
+    colloquy \
+    discord \
+    docker \
+    doubletwist \
+    dropbox \
+    google-chrome \
+    google-hangouts \
+    iterm2 \
+    keepingyouwawake \
+    flux \
+    rectangle \
+    sublime-text \
+    superduper \
+    transmission \
+    valentina-studio \
+    vlc \
+    slack \
+    keka \
+    qlcolorcode \
+    qlstephen \
+    qlmarkdown \
+    quicklook-json \
+    qlprettypatch \
+    quicklook-csv \
+    betterzip \
+    webpquicklook \
+    suspicious-package

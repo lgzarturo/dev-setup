@@ -1,6 +1,6 @@
 # Dev Setup
 
-1. Install Homebrew
+1. Install Homebrew, please run script `setup.sh`
 2. Install terminal `iterm2`
 3. Customize `bash` terminal and install `zsh`
 4. Install recommended applications with brew, see: `brew-casks.txt`
@@ -12,6 +12,7 @@
     - Java SDK with `sdkman` (17, 19)
 9. Install and customize Visual Studio Code, choose the follow editor extensions, see: `vscode-extensions.txt`
     - Current theme: Andromeda
-1. Install and customize IntelliJ IDEA, PyCharm and DataGrip
-1. For eye care install Flux
-1. For productivity install Break Timer
+    - You can install all extension with this command: `xargs -L code --install-extension < vscode-extensions.txt`
+10. Install and customize IntelliJ IDEA, PyCharm and DataGrip
+11. For eye care install Flux
+12. For productivity install Break Timer
