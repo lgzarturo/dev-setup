@@ -15,4 +15,3 @@
     - You can install all extension with this command: `xargs -L code --install-extension < vscode-extensions.txt`
 10. Install and customize IntelliJ IDEA, PyCharm and DataGrip
 11. For eye care install Flux
-12. For productivity install Break Timer

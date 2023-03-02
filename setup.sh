@@ -25,12 +25,11 @@ git config --global user.email "lgzarturo@gmail.com"
 git config --global credential.helper osxkeychain
 
 # install vim
-brew install vim
-git clone https://github.com/amix/vimrc.git ~/.vim_runtime
-sh ~/.vim_runtime/install_awesome_vimrc.sh
 brew install neovim
 mkdir -p ~/.config/nvim
-ln -s (which nvim) /opt/homebrew/bin/nvim
+ln -s $(which nvim) /opt/homebrew/bin/nvim
+git clone https://github.com/amix/vimrc.git ~/.vim_runtime
+sh ~/.vim_runtime/install_awesome_vimrc.sh
 
 # install python
 brew install python
