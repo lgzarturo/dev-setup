@@ -46,6 +46,15 @@ sudo python get-pip.py
 pip install virtualenv
 python -m pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose
 pip install ipython
+echo 'if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi' >> ~/.zshrc
+source ~/.zshrc # Apply
+brew install pyenv-virtualenv
+echo 'if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi' >> ~/.zshrc
+source ~/.zshrc # Apply
+brew install gettext
+echo 'export PATH="/usr/local/opt/gettext/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc # Apply
+brew install openssl readline sqlite3 xz zlib
 brew cleanup
 
 # install zsh
@@ -56,7 +65,7 @@ git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/z
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 source ~/.zshrc
 
-# install node stable
+# install node stable https://github.com/creationix/nvm#install--update-script
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 source ~/.bashrc
 command -v nvm

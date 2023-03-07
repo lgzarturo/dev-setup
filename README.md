@@ -30,3 +30,11 @@ done
 
 - Review the file `setup_brew_installer.sh` and install application needs.
 - Ubuntu Linux environment see the file `setup_linux.sh`.
+
+## Apps
+
+Here got a quick list of some applications, might find useful as well:
+
+- [Insomnia](https://insomnia.rest): Useful to test your REST APIs.
+- [GitHub Desktop](https://desktop.github.com/): Tool to review the diff and stash changes.
+- [Spectacle](https://www.spectacleapp.com/): Keyboard shortcuts to move and resize windows.
