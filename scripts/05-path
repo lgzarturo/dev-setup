@@ -1,0 +1,68 @@
+#!/usr/bin/env zsh
+
+# Variables de entorno
+export PATH="/usr/local/sbin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# Sdkman
+export SDKMAN_DIR="$HOME/.sdkman"
+export VISUALVM_HOME="$SDKMAN_DIR/candidates/visualvm/current"
+export PATH="$VISUALVM_HOME/bin:$PATH"
+export GRAILS_OPTS="-Xmx1G -Xms256m -XX:MaxPermSize=256m"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# Ruby
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+export PATH="$HOME/.rbenv/versions/2.7.0/bin:$PATH"
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+# Yarn
+# export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# Php y composer
+export PATH="/usr/local/opt/apr/bin:$PATH"
+export PATH="/usr/local/opt/apr-util/bin:$PATH"
+export PATH="/usr/local/opt/php@7.4/bin:$PATH"
+export PATH="/usr/local/opt/php@7.4/sbin:$PATH"
+export PATH="$HOME/.composer/vendor/bin:$PATH"
+
+# MySQL
+export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+
+# SDK MacOSX Devtools
+SDKROOT="/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
+
+# Python 3
+export PATH="/usr/local/opt/python@3.8/bin:$PATH"
+
+# Openssl
+export PATH="/usr/local/opt/openssl/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
+export PKG_CONFIG_PATH="/usr/local/opt/openssl@1.1/lib/pkgconfig"
+
+# Sonarqube
+# export PATH="$HOME/runtime/sonarqube-8.1.0.31237/bin/macosx-universal-64:$PATH"
+export PATH="$HOME/runtime/sonar-scanner-4.2.0.1873-macosx/bin:$PATH"
+
+# Liquibase
+export PATH="$HOME/runtime/liquibase-3.5.3-bin:$PATH"
+
+# Runtime
+export PATH="$HOME/runtime:$PATH"
+
+# Android
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export PATH="$PATH:$ANDROID_HOME/emulator"
+export PATH="$PATH:$ANDROID_HOME/tools"
+export PATH="$PATH:$ANDROID_HOME/tools/bin"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
+
+# Flutter
+export PATH="$PATH:$HOME/runtime/flutter/bin"
+
+# Symfony
+export PATH="$HOME/.symfony/bin:$PATH"
+
+# Deno completion
+source /usr/local/etc/bash_completion.d/deno.bash

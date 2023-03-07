@@ -1,0 +1,140 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+	name = Arturo López
+	email = lgzarturo@gmail.com
+[core]
+    editor = code --new-window --wait
+	excludesfile = ~/.gitignore
+	quotepath = false
+    precomposeunicode = false
+    untrackedCache = true
+[color]
+    ui = auto
+[color "branch"]
+    current = yellow reverse
+	local = yellow
+    remote = green
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold # line info
+	old = red # deletions
+	new = green # additions
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+[diff]
+    tool = vscode-diff
+    renames = copies
+[difftool]
+    prompt = false
+[difftool "vscode-diff"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+[merge]
+    tool = vscode-merge
+[mergetool]
+    KeppBackup = false
+[mergetool "vscode-merge"]
+    cmd = code --wait $MERGED
+[alias]
+    # View abbreviated SHA, description, and history graph of the latest 20 commits.
+	l = log --pretty=oneline -n 20 --graph --abbrev-commit
+	# View the current working tree status using the short format.
+	s = status -s
+	# Show the diff between the latest commit and the current state.
+    d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+    # `git di $number` shows the diff between the state `$number` revisions ago and the current state.
+	di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+	# Pull in remote changes for the current repository and all its submodules.
+	p = pull --recurse-submodules
+	# Clone a repository including all submodules.
+	c = clone --recursive
+	# Commit all changes.
+	ca = !git add -A && git commit -av
+	# Switch to a branch, creating it if necessary.
+	go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+	st = status
+	ss = st --short
+	egc = config --global -e
+	elc = config --local -e
+	esc = config --system -e
+	co = checkout
+	br = branch
+	ci = commit
+	amend = co -a --amend
+	pdev = push --set-upstream origin develop
+    pmaster = push --set-upstream origin master
+    # Show verbose output about tags, branches or remotes
+	tags = tag -l
+	branches = branch --all
+	remotes = remote --verbose
+	# List aliases.
+	aliases = config --get-regexp alias
+	# Amend the currently staged files to the latest commit.
+	lamend = co --amend --reuse-message=HEAD
+	# Credit an author on the latest commit.
+	credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+	# Interactive rebase with the given number of latest commits.
+	reb = "!r() { git rebase -i HEAD~$1; }; r"
+	# Remove the old tag with this name and tag the latest commit with it.
+	retag = "!r() { git tag -d $1 && git push origin :refs/tags/$1 && git tag $1; }; r"
+	# Find branches containing commit
+	fb = "!f() { git branch -a --contains $1; }; f"
+	# Find tags containing commit
+	ft = "!f() { git describe --always --contains $1; }; f"
+	# Find commits by source code
+	fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+	# Find commits by commit message
+	fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+	# Remove branches that have already been merged with main.
+	# a.k.a. ‘delete merged’
+	dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+	# List contributors with number of commits.
+	contributors = shortlog --summary --numbered
+	# Show the user email for the current repository.
+    whoami = config user.email
+    i = '!git init && git commit -m "Commit initial - root" --allow-empty'
+    # status
+    sf = "!f() { if [ -n \"$GIT_PREFIX\" ]; then cd \"$GIT_PREFIX\"; fi; git chain 'status' $@; }; f"
+    sh = show
+    sho = "!f(){ branch=$(git bb); git show origin/$branch $@; }; f"
+    shom = show origin/master
+    shs = "!git --no-pager show --stat"
+    shso = "!f(){ branch=$(git bb); git --no-pager show --stat origin/$branch $@; }; f"
+    shsom = "!git --no-pager show --stat origin/master"
+    shop = "!f() { $(git editor) $(git show --pretty=\"format:\" --name-only $1); }; f"
+    # tree
+    lc = log --color --graph --pretty='%C(yellow)%h%C(reset) %Cred%cd%C(reset) %C(bold blue)%an%C(reset) %s%C(bold yellow)%d%C(reset)' --decorate --date=relative
+    ls = log --color --pretty=format:'%C(yellow)%h%C(reset) %Cred%cd%C(reset) %C(bold blue)%an%C(reset) %s%C(bold yellow)%d%C(reset)' --decorate --date=relative --numstat
+    lo = "!f(){ branch=$(git bb); git log origin/$branch $@; }; f"
+    lom = log origin/master
+    lg = log
+    hash = rev-parse HEAD
+    shash = rev-parse --short HEAD
+    rl = reflog show --date=relative
+[url "git@github.com:"]
+	insteadOf = "gh:"
+	pushInsteadOf = "github:"
+	pushInsteadOf = "git://github.com/"
+[url "git://github.com/"]
+	insteadOf = "github:"
+[url "git@gist.github.com:"]
+	insteadOf = "gst:"
+	pushInsteadOf = "gist:"
+	pushInsteadOf = "git://gist.github.com/"
+[url "git://gist.github.com/"]
+    insteadOf = "gist:"
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+[mergetool "sourcetree"]
+	cmd = /Volumes/Samsung USB/Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = ~/.stCommitMsg
+[pull]
+	ff = only

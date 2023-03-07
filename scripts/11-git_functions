@@ -1,0 +1,148 @@
+#!/usr/bin/env zsh
+
+sclone() {
+	URL=$1
+	if [ -z "${URL}" ]; then
+        echo "Usage $0"
+        echo "eg: simple_clone {url}"
+    else
+		DIRECTORY=$(echo "$URL"| cut -d'/' -f 2 | cut -d'.' -f 1)
+        clone $URL && cd $DIRECTORY
+    fi
+}
+
+committer() {
+    MSG=$@;
+    # Add file(s), commit with generic message and push to remote
+    git status --porcelain | cut -c4- | while read line; do
+        git add -f "${line}";
+    done
+
+    FILE=$(git status --porcelain | cut -c4- | awk '{print "file:"$1}')
+
+    if [ ! -z "$MSG" ]; then
+        git commit -m "👨🏻‍💻 $MSG";
+    else
+        git commit -m "🤖 Updated ${FILE}";
+    fi;
+
+	read "respose?🚨 Hit ENTER if you want to push - Continue? [Yy/Nn] Ctrl+C to cancel 🙀 "
+	if [[ "$respose" =~ ^[Yy]$ ]]; then
+        BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+        echo "💻 Git Pushing Code [Branch: ${BRANCH}]...."
+		zsh -c "git push --no-verify -u origin ${BRANCH}"
+	fi
+}
+
+git_pr() {
+    # Push changes and create Pull Request on GitHub
+    read "respose?🚨 Verificar si esta en el branch de desarrollo. [Yy/Nn] Ctrl+C to cancel 🙀 "
+    if [[ "$respose" =~ ^[Yy]$ ]]; then
+        REMOTE="master";
+        #if ! git show-ref --quiet refs/heads/master; then REMOTE="master"; fi
+        BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+        echo "💻 Git Pushing Code [Branch: ${BRANCH}]...."
+        git push -u origin "${BRANCH}" || true;
+        if command -v gh > /dev/null; then
+            echo "🐙 Pull request to GitHub [Remote: ${REMOTE}, Branch: ${BRANCH}]..."
+            hub pull-request -b "${REMOTE}" -h "${BRANCH}" --no-edit || true
+        else
+            echo "Failed to create PR, create it Manually"
+            echo "If you would like to continue install hub: https://github.com/github/hub/"
+        fi
+    else
+        echo "😬 No paso nada...."
+    fi
+}
+
+git_review() {
+    # Push changes and create Pull Request on GitHub
+    read "respose?🚨 Verificar si esta en el branch de desarrollo. [Yy/Nn] Ctrl+C to cancel 🙀 "
+    if [[ "$respose" =~ ^[Yy]$ ]]; then
+        REMOTE="master";
+        LABELS="review me"
+        #if ! git show-ref --quiet refs/heads/develop; then REMOTE="master"; fi
+        BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+        echo "💻 Git Pushing Code [Branch: ${BRANCH}]...."
+        git push -u origin "${BRANCH}" || true;
+        if command -v hub > /dev/null; then
+            # Check if branch contains a JIRA ticket id.
+            if echo "${BRANCH}" | grep -q "MT-"; then
+                REVIEWERS="lgzarturo"
+                echo "👨🏻‍💻 Requesting PR Reviewers: ${REVIEWERS} => [Remote: ${REMOTE}, Branch: ${BRANCH}]...";
+                hub pull-request --draft -b "${REMOTE}" -h "${BRANCH}" -r "${REVIEWERS}" \
+                    --labels "${LABELS}" --no-edit || hub pull-request \
+                        -b "${REMOTE}" -h "${BRANCH}" -r "${REVIEWERS}" --labels "${LABELS}" --no-edit
+            else
+                echo "🐙 Pull request to GitHub [Remote: ${REMOTE}, Branch: ${BRANCH}]..."
+                hub pull-request --draft -b "${REMOTE}" -h "${BRANCH}" --no-edit || hub pull-request \
+                    -b "${REMOTE}" -h "${BRANCH}" --no-edit
+            fi
+        else
+            echo "Failed to create PR, create it Manually"
+            echo "If you would like to continue install hub: https://github.com/github/hub/"
+        fi
+    else
+        echo "😬 No paso nada...."
+    fi
+}
+
+git_url_shortener(){
+    # GitHub URL shortener
+    if [ -z "${1}" ]; then
+        echo "Usage $0 {Custom URL Name} {URL}"
+        echo "eg: ${FUNCNAME[0]} runme https://raw.githubusercontent.com/blablabla "
+    else
+        curl https://git.io/ -i -F "url=${2}" -F "code=${1}"
+    fi
+}
+
+git_fetch_all_branches() {
+    # Fetch all remote branches
+    remote=origin ; for brname in `git branch -r | grep $remote | grep -v /master | grep -v /HEAD | awk '{gsub(/^[^\/]+\//,"",$1); print $1}'`; do git branch --track $brname $remote/$brname || true; done 2>/dev/null
+    git fetch --all
+    git pull --all
+}
+
+git_master () {
+    git checkout -f master && git pull --allow-unrelated-histories -q &>/dev/null &disown;
+}
+
+git_main () {
+    git checkout -f main && git pull --allow-unrelated-histories -q &>/dev/null &disown;
+}
+
+git_develop () {
+    git checkout -f develop && git pull --allow-unrelated-histories -q &>/dev/null &disown;
+}
+
+# Generate .gitignore
+git_ignore() {
+    curl -sL https://www.gitignore.io/api/$@ >> .gitignore;
+}
+
+# Pull all remote refs from repos in the current dir
+
+git_pull_all() {
+    CUR_DIR=$(pwd)
+	echo -e "${PURPLE}😎 Scanning GIT Repositories ${PWD}${NORMAL}"
+	for DIR in `find . -type d -execdir test -d {}/.git \; -print -prune | sort`; do
+        builtin cd $DIR &>/dev/null;
+
+        (git fetch -pa && git pull --allow-unrelated-histories \
+            origin $(git symbolic-ref --short HEAD)) &>/dev/null &disown;
+
+        STATUS=$(git status 2>/dev/null |
+        awk -v r=${AWK_RED} -v y=${AWK_YELLOW} -v g=${AWK_GREEN} -v b=${AWK_BLUE} -v n=${AWK_NORMAL} '
+        /^On branch / {printf(y$3n)}
+        /^Changes not staged / {printf(g"-> 💾 Changes unstaged!"n)}
+        /^Changes to be committed/ {printf(b"-> 👋🏻 Uncommitted changes!"n)}
+        /^Your branch is ahead of/ {printf(r"-> 🚀 Push changes!"n)}
+        ')
+        LAST_UPDATE="${LIGHTCYAN}[$(git show -1 --stat | grep 'Date:' | cut -f4- -d' ')]${NORMAL} -> ${STATUS} "
+
+        printf "${GREEN}Repo: ${DIR} | ${LAST_UPDATE}\n${NORMAL}";
+        builtin cd - &>/dev/null;
+    done
+	builtin cd ${CUR_DIR} &>/dev/null;
+}

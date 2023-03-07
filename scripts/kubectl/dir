@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+##? Listar los pods de kubernetes y copiar el id de un pod seleccionado
+#?? 1.0.0
+##?
+##? Require:
+##?   kubectl, awk, fzf
+##? Usage:
+##?   dir
+#docs::eval "$@"
+
+if kubectl >/dev/null 2>&1; then
+  pod_container=$(kubectl get pods | awk '{if (NR!=1) print $1 ": " $(NF)}' | fzf --height 40%)
+
+  if [[ -n $pod_container ]]; then
+    pod_container_id=$(echo $pod_container | awk -F ': ' '{print $1}')
+    echo $pod_container_id | pbcopy
+    echo "👍 Se ha copiado el id del pod al portapapeles -> $pod_container_id"
+  else
+    echo "😳 No se ha seleccionado el pod."
+  fi
+else
+  echo "🤬 No esta corriendo el 😈 de kubectl."
+fi

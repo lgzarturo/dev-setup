@@ -1,0 +1,69 @@
+# Android
+.android/
+.AndroidStudio*/
+
+# Kite
+.kite/
+
+# Compiled Python files
+*.pyc
+.python_history*
+.ipython/
+.ipynb_checkpoints/
+.pylint.d/
+.python_hue/
+
+# Node
+.nv/
+.nvm/
+.scripts/
+.node_repl_history
+
+# Folder view configuration files
+.DS_Store
+Desktop.ini
+
+# Vim
+.gist-vim
+.viminfo.tmp
+.viminfo
+
+# Thumbnail cache files
+._*
+Thumbs.db
+
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes
+
+# Java
+.m2/
+.java/
+.gradle/
+.sdkman/
+workspace/
+
+# Other folders
+.dotfiles
+.icons/
+.gitconfig
+.oh-my-zsh
+zsh_history
+.zcompdump*
+.ssh/
+.vim/
+.idea/
+.ssh/
+.grails/
+.eclipse/
+.gradle/
+.cache/
+.bundle/
+.gem/
+.local/
+.composer/
+*.zwc
+*.log
+node_modules/
+.cache/
+.vscode/

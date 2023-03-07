@@ -15,3 +15,13 @@
     - You can install all extension with this command: `xargs -L code --install-extension < vscode-extensions.txt`
 10. Install and customize IntelliJ IDEA, PyCharm and DataGrip
 11. For eye care install Flux
+12. Set configurations with dotfiles, only rename each file with prefix dot and put the file in user `~/`.
+13. Configure the `~/.zshrc` following the file `zshrc_sample.txt`.
+14. Copy `scripts` folder with the needs of environment, and configure `~/.zshrc`:
+
+```bash
+# Load scripts in the session terminal.
+for file in ~/.scripts/*; do
+    [ -r "$file" ] && [ -f "$file" ] && source "$file"
+done
+```
