@@ -25,3 +25,8 @@ for file in ~/.scripts/*; do
     [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 ```
+
+## Additional
+
+- Review the file `setup_brew_installer.sh` and install application needs.
+- Ubuntu Linux environment see the file `setup_linux.sh`.
